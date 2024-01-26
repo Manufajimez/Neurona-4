@@ -10,19 +10,19 @@ class Neuron:
     def _relu(self, x):
         return np.maximum(0, x)
 
-    def _sigmoid(self, x):
+    def _sigmoide(self, x):
         return 1 / (1 + np.exp(-x))
 
-    def _tanh(self, x):
+    def _tangente_hiperbolica(self, x):
         return np.tanh(x)
 
     def activate(self, x):
         if self.activation_function == "relu":
             return self._relu(x)
         elif self.activation_function == "sigmoide":
-            return self._sigmoid(x)
-        elif self.activation_function == "tangente hiperbólica":
-            return self._tanh(x)
+            return self._sigmoide(x)
+        elif self.activation_function == "tangente_hiperbolica":
+            return self._tangente_hiperbolica(x)
         else:
             raise ValueError("Invalid activation function")
 
@@ -40,15 +40,19 @@ num_entradas = st.slider("Número de entradas/pesos de la neurona:", min_value=1
 col_pesos = st.columns(num_entradas)
 weights = [col_pesos[i].slider(f"Seleccione el valor del peso w{i}", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key=f"w{i}") for i in range(num_entradas)]
 
-col_entradas = st.columns(num_entradas)
-inputs = [col_entradas[i].number_input(f"Ingrese el valor de la entrada x{i}", step=0.1, key=f"x{i}") for i in range(num_entradas)]
+# Pestaña para configurar el sesgo
+with st.expander("Configuración del sesgo"):
+    bias = st.slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=10.0, value=0.0, step=0.1, key="b")
 
-bias = st.slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=10.0, value=0.0, step=0.1, key="b")
+# Pestaña para configurar las entradas
+with st.expander("Configuración de las entradas"):
+    col_entradas = st.columns(num_entradas)
+    inputs = [col_entradas[i].number_input(f"Ingrese el valor de la entrada x{i}", step=0.1, key=f"x{i}") for i in range(num_entradas)]
 
 # Pestaña para elegir la función de activación
 with st.expander("Configuración de la función de activación"):
     st.write("Seleccione la función de activación:")
-    activation_function = st.radio("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
+    activation_function = st.radio("", ["relu", "sigmoide", "tangente_hiperbolica"], key="activation_function")
     st.write(f"Función de activación actual: {activation_function}")
 
 # Crear la neurona
