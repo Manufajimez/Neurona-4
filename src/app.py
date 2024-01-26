@@ -50,11 +50,7 @@ if st.button("Calcular salida"):
     output = neuron.run(inputs)
     st.write(f"La salida de la neurona es: {output}")
 
-
-
-
-
-
-
-
-
+# Pestaña para cambiar la función de activación
+activation_function = st.radio("Seleccione la función de activación:", ["relu", "sigmoid", "tanh"])
+neuron.activation_function = activation_function
+st.write(f"Función de activación actual: {activation_function}")
