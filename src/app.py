@@ -41,7 +41,7 @@ col_pesos = st.columns(num_entradas)
 weights = [col_pesos[i].slider(f"Seleccione el valor del peso w{i}", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key=f"w{i}") for i in range(num_entradas)]
 
 col_entradas = st.columns(num_entradas)
-inputs = [col_entradas[i].number_input(f"Ingrese el valor de la entrada x{i}", step=0.1, key=f"x{i}") for i in range(num_entradas)]
+inputs = [col_entradas[i].number_input(f"Ingrese el valor de la entrada x{i}", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key=f"x{i}") for i in range(num_entradas)]
 
 bias = st.slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=10.0, value=0.0, step=0.1, key="b")
 
