@@ -44,13 +44,15 @@ col_entradas = st.columns(num_entradas)
 inputs = [col_entradas[i].number_input(f"Ingrese el valor de la entrada x{i}", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key=f"x{i}") for i in range(num_entradas)]
 
 # Pestaña para elegir la función de activación
-with st.expander("Configuración de la función de activación"):
-    activation_function = st.selectbox("Seleccione la función de activación:", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
-    st.write(f"Función de activación actual: {activation_function}")
+with st.expander("Configuración"):
+    # Sub-pestaña para configurar el sesgo
+    with st.expander("Configuración del sesgo", expanded=True):
+        bias = st.slider("Seleccione el valor del sesgo (b)", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key="b")
 
-# Pestaña para configurar el sesgo
-with st.expander("Configuración del sesgo"):
-    bias = st.slider("Seleccione el valor del sesgo (b)", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key="b")
+    # Sub-pestaña para configurar la función de activación
+    with st.expander("Configuración de la función de activación", expanded=True):
+        activation_function = st.selectbox("Seleccione la función de activación:", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
+        st.write(f"Función de activación actual: {activation_function}")
 
 # Crear la neurona
 neuron = Neuron(input_size=num_entradas, activation_function=activation_function)
