@@ -48,7 +48,7 @@ bias = st.number_input("Ingrese el valor del sesgo (b)", min_value=-10.0, max_va
 # Pestaña para elegir la función de activación
 
 st.write("Seleccione la función de activación:")
-activation_function = st.radio("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
+activation_function = st.selectbox("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
 st.write(f"Función de activación actual: {activation_function}")
 
 # Crear la neurona
