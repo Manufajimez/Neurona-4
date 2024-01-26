@@ -19,9 +19,9 @@ class Neuron:
     def activate(self, x):
         if self.activation_function == "relu":
             return self._relu(x)
-        elif self.activation_function == "sigmoid":
+        elif self.activation_function == "sigmoide":
             return self._sigmoid(x)
-        elif self.activation_function == "tanh":
+        elif self.activation_function == "tangente hiperbólica":
             return self._tanh(x)
         else:
             raise ValueError("Invalid activation function")
@@ -48,7 +48,7 @@ bias = st.slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=1
 # Pestaña para elegir la función de activación
 with st.expander("Configuración de la función de activación"):
     st.write("Seleccione la función de activación:")
-    activation_function = st.radio("", ["relu", "sigmoid", "tanh"], key="activation_function")
+    activation_function = st.radio("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
     st.write(f"Función de activación actual: {activation_function}")
 
 # Crear la neurona
