@@ -56,4 +56,4 @@ neuron = Neuron(input_size=num_entradas, activation_function=activation_function
 
 if st.button("Calcular salida"):
     output = neuron.run(inputs)
-    st.write(f"La salida
+    st.write(f"La salida de la neurona es: {output}")
