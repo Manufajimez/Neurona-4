@@ -47,7 +47,7 @@ bias = st.slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=1
 
 # Pestaña para elegir la función de activación
 with st.expander("Configuración de la función de activación"):
-    activation_function = st.radio("Seleccione la función de activación:", ["relu", "sigmoid", "tanh"])
+    activation_function = st.radio("Seleccione la función de activación:", ["relu", "sigmoid", "tanh"], key="activation_function")
     st.write(f"Función de activación actual: {activation_function}")
 
 # Crear la neurona
