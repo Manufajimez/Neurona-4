@@ -43,13 +43,16 @@ weights = [col_pesos[i].slider(f"Seleccione el valor del peso w{i}", min_value=0
 col_entradas = st.columns(num_entradas)
 inputs = [col_entradas[i].number_input(f"Ingrese el valor de la entrada x{i}", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key=f"x{i}") for i in range(num_entradas)]
 
-bias = st.number_input("Ingrese el valor del sesgo (b)", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key="b")
-
 # Pestaña para elegir la función de activación
+col_activacion, col_sesgo = st.columns(2)
 
-st.write("Seleccione la función de activación:")
-activation_function = st.selectbox("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
-st.write(f"Función de activación actual: {activation_function}")
+with col_activacion:
+    st.write("Seleccione la función de activación:")
+    activation_function = st.selectbox("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
+    st.write(f"Función de activación actual: {activation_function}")
+
+with col_sesgo:
+    bias = st.number_input("Ingrese el valor del sesgo (b)", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key="b")
 
 # Crear la neurona
 neuron = Neuron(input_size=num_entradas, activation_function=activation_function)
