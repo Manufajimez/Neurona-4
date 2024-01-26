@@ -2,10 +2,11 @@ import streamlit as st
 import numpy as np
 
 class Neuron:
-    def __init__(self, input_size, activation_function="relu"):
+    def __init__(self, input_size, activation_function="relu", regularization=None):
         self.weights = np.random.rand(input_size)
         self.bias = np.random.rand()
         self.activation_function = activation_function
+        self.regularization = regularization
 
     def _relu(self, x):
         return np.maximum(0, x)
@@ -26,10 +27,19 @@ class Neuron:
         else:
             raise ValueError("Invalid activation function")
 
+    def apply_regularization(self):
+        if self.regularization == "L1":
+            return np.sum(np.abs(self.weights))
+        elif self.regularization == "L2":
+            return np.sum(self.weights**2)
+        else:
+            return 0
+
     def run(self, input_data):
         weighted_sum = np.dot(self.weights, input_data) + self.bias
         output = self.activate(weighted_sum)
-        return output
+        regularization_term = self.apply_regularization()
+        return output + regularization_term
 
 st.image('img/neurona.jpg')
 st.title("Hola, Neurona!")
@@ -51,8 +61,14 @@ with st.expander("Configuración de la función de activación"):
     activation_function = st.radio("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
     st.write(f"Función de activación actual: {activation_function}")
 
+# Pestaña para elegir la función de regularización
+with st.expander("Configuración de la función de regularización"):
+    st.write("Seleccione la función de regularización:")
+    regularization = st.radio("", ["L1", "L2", "Ninguna"], key="regularization")
+    st.write(f"Función de regularización actual: {regularization}")
+
 # Crear la neurona
-neuron = Neuron(input_size=num_entradas, activation_function=activation_function)
+neuron = Neuron(input_size=num_entradas, activation_function=activation_function, regularization=regularization)
 
 if st.button("Calcular salida"):
     output = neuron.run(inputs)
