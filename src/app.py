@@ -34,6 +34,16 @@ class Neuron:
 st.image('img/neurona.jpg')
 st.title("Hola, Neurona!")
 
+# Pestaña para configurar el sesgo
+bias = st.expander("Configuración del sesgo")
+bias_value = bias.number_input("Ingrese el valor del sesgo (b)", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key="b")
+
+# Pestaña para elegir la función de activación
+with st.expander("Configuración de la función de activación"):
+    st.write("Seleccione la función de activación:")
+    activation_function = st.radio("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
+    st.write(f"Función de activación actual: {activation_function}")
+
 # Pestaña para configurar la neurona
 num_entradas = st.slider("Número de entradas/pesos de la neurona:", min_value=1, max_value=10, value=1, step=1)
 
@@ -42,16 +52,6 @@ weights = [col_pesos[i].slider(f"Seleccione el valor del peso w{i}", min_value=0
 
 col_entradas = st.columns(num_entradas)
 inputs = [col_entradas[i].number_input(f"Ingrese el valor de la entrada x{i}", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key=f"x{i}") for i in range(num_entradas)]
-
-# Pestaña para elegir la función de activación
-with st.expander("Configuración de la función de activación"):
-    st.write("Seleccione la función de activación:")
-    activation_function = st.radio("", ["relu", "sigmoide", "tangente hiperbólica"], key="activation_function")
-    st.write(f"Función de activación actual: {activation_function}")
-
-# Pestaña para configurar el sesgo
-bias = st.expander("Configuración del sesgo")
-bias_value = bias.number_input("Ingrese el valor del sesgo (b)", min_value=-10.0, max_value=10.0, value=0.0, step=0.1, key="b")
 
 # Crear la neurona
 neuron = Neuron(input_size=num_entradas, activation_function=activation_function)
