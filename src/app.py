@@ -1,66 +1,54 @@
 import streamlit as st
+import numpy as np
+
+class Neuron:
+    def __init__(self, input_size, activation_function="relu"):
+        self.weights = np.random.rand(input_size)
+        self.bias = np.random.rand()
+        self.activation_function = activation_function
+
+    def _relu(self, x):
+        return np.maximum(0, x)
+
+    def _sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
+    def _tanh(self, x):
+        return np.tanh(x)
+
+    def activate(self, x):
+        if self.activation_function == "relu":
+            return self._relu(x)
+        elif self.activation_function == "sigmoid":
+            return self._sigmoid(x)
+        elif self.activation_function == "tanh":
+            return self._tanh(x)
+        else:
+            raise ValueError("Invalid activation function")
+
+    def run(self, input_data):
+        weighted_sum = np.dot(self.weights, input_data) + self.bias
+        output = self.activate(weighted_sum)
+        return output
 
 st.image('img/neurona.jpg')
 st.title("Hola, Neurona!")
 
-tab1, tab2, tab3 = st.tabs(["Una Variable", "Dos Variables", "Tres Variables"])
+num_entradas = st.slider("Número de entradas/pesos de la neurona:", min_value=1, max_value=10, value=1, step=1)
 
-with tab1:
-    st.header("Una Variable de Entrada")
-    
-    col_pesos = st.columns(2)
-    w0 = col_pesos[0].slider("Seleccione el valor del peso w0", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key="w0_una")
-    
-    col_entradas = st.columns(1)
-    x0 = col_entradas[0].number_input("Ingrese el valor de la entrada x0", step=0.1, key="x0_una")
-    
-    col_sesgo = st.columns(1)
-    b = col_sesgo[0].slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=10.0, value=0.0, step=0.1, key="b_una")
+col_pesos = st.columns(num_entradas)
+weights = [col_pesos[i].slider(f"Seleccione el valor del peso w{i}", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key=f"w{i}") for i in range(num_entradas)]
 
-    st.write("")
-    if st.button("Calcular salida", key="calcular_una_variable"):
-        operacion = w0 * x0 + b
-        st.write(f"La salida de la neurona es: {operacion}")
+col_entradas = st.columns(num_entradas)
+inputs = [col_entradas[i].number_input(f"Ingrese el valor de la entrada x{i}", step=0.1, key=f"x{i}") for i in range(num_entradas)]
 
-with tab2:
-    st.header("Dos Variables de Entrada")
-    
-    col_pesos = st.columns(2)
-    w0 = col_pesos[0].slider("Seleccione el valor del peso w0", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key="w0_dos")
-    w1 = col_pesos[1].slider("Seleccione el valor del peso w1", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key="w1_dos")
-    
-    col_entradas = st.columns(2)
-    x0 = col_entradas[0].number_input("Ingrese el valor de la entrada x0", step=0.1, key="x0_dos")
-    x1 = col_entradas[1].number_input("Ingrese el valor de la entrada x1", step=0.1, key="x1_dos")
-    
-    col_sesgo = st.columns(1)
-    b = col_sesgo[0].slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=10.0, value=0.0, step=0.1, key="b_dos")
+bias = st.slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=10.0, value=0.0, step=0.1, key="b")
 
-    st.write("")
-    if st.button("Calcular salida", key="calcular_dos_variables"):
-        operacion = w0 * x0 + w1 * x1 + b
-        st.write(f"La salida de la neurona es: {operacion}")
+neuron = Neuron(input_size=num_entradas)
 
-with tab3:
-
-    
-    col_pesos = st.columns(3)
-    w0 = col_pesos[0].slider("Seleccione el valor del peso w0", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key="w0_tres")
-    w1 = col_pesos[1].slider("Seleccione el valor del peso w1", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key="w1_tres")
-    w2 = col_pesos[2].slider("Seleccione el valor del peso w2", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key="w2_tres")
-    
-    col_entradas = st.columns(3)
-    x0 = col_entradas[0].number_input("Ingrese el valor de la entrada x0", step=0.1, key="x0_tres")
-    x1 = col_entradas[1].number_input("Ingrese el valor de la entrada x1", step=0.1, key="x1_tres")
-    x2 = col_entradas[2].number_input("Ingrese el valor de la entrada x2", step=0.1, key="x2_tres")
-    
-    col_sesgo = st.columns(1)
-    b = col_sesgo[0].slider("Seleccione el valor del sesgo (b)", min_value=0.0, max_value=10.0, value=0.0, step=0.1, key="b_tres")
-
-    if st.button("Calcular salida", key="calcular_tres_variables"):
-        operacion = w0 * x0 + w1 * x1 + w2 * x2 + b
-        st.write(f"La salida de la neurona es:",operacion)
-
+if st.button("Calcular salida"):
+    output = neuron.run(inputs)
+    st.write(f"La salida de la neurona es: {output}")
 
 
 
